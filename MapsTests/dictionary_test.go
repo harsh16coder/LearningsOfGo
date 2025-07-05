@@ -21,6 +21,31 @@ func TestSearch(t *testing.T) {
 	})
 }
 
+func TestAdd(t *testing.T) {
+	t.Run("New Word", func(t *testing.T) {
+		dictionary := Dictionary{}
+		word := "test"
+		definition := "This is first Test"
+		err := dictionary.Add(word, definition)
+		assertError(t, err, nil)
+		assertDefinition(t, dictionary, word, definition)
+	})
+
+	t.Run("Word Already Exist", func(t *testing.T) {
+
+	})
+}
+
+func assertDefinition(t testing.TB, dictionary Dictionary, word, definition string) {
+	t.Helper()
+
+	got, err := dictionary.Search(word)
+	if err != nil {
+		t.Fatal("should find added word:", err)
+	}
+	assertStrings(t, got, definition)
+}
+
 func assertError(t testing.TB, got, want error) {
 	t.Helper()
 
