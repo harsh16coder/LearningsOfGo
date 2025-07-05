@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"os"
 	"time"
 )
 
@@ -28,7 +29,7 @@ func (s *SpyCountDownOperation) Write(p []byte) (n int, err error) {
 	return
 }
 
-func Countdown(out io.Writer, sleeper *SpyCountDownOperation) {
+func Countdown(out io.Writer, sleeper *configurable) {
 	for i := 3; i > 0; i-- {
 		fmt.Fprintln(out, i)
 		sleeper.Sleep()
@@ -36,6 +37,29 @@ func Countdown(out io.Writer, sleeper *SpyCountDownOperation) {
 	fmt.Fprintf(out, "Go!")
 }
 
+// configurable sleeper
+
+type configurable struct {
+	duration         time.Duration
+	sleep            func(time.Duration)
+	totalTimeElapsed int
+}
+
+type mySleeper struct {
+	timeslept time.Duration
+}
+
+func (s *mySleeper) sleep(duration time.Duration) {
+	s.timeslept = duration
+}
+
+func (s *configurable) Sleep() {
+	s.totalTimeElapsed += int(s.duration.Seconds())
+	s.sleep(s.duration)
+}
+
 func main() {
-	// Countdown(os.Stdout,)
+	sleeper := &configurable{1 * time.Second, time.Sleep, 0}
+	Countdown(os.Stdout, sleeper)
+	fmt.Println("time slept %v seconds", sleeper.totalTimeElapsed)
 }
