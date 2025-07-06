@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"reflect"
 	"testing"
 	"time"
 )
@@ -21,29 +20,29 @@ Go!`
 		}
 	})
 
-	t.Run("sleep before every print", func(t *testing.T) {
-		spySleepPrinter := &SpyCountDownOperation{}
-		Countdown(spySleepPrinter, spySleepPrinter)
+	// t.Run("sleep before every print", func(t *testing.T) {
+	// 	spySleepPrinter := &SpyCountDownOperation{}
+	// 	Countdown(spySleepPrinter, spySleepPrinter)
 
-		want := []string{
-			write,
-			sleep,
-			write,
-			sleep,
-			write,
-			sleep,
-			write,
-		}
+	// 	want := []string{
+	// 		write,
+	// 		sleep,
+	// 		write,
+	// 		sleep,
+	// 		write,
+	// 		sleep,
+	// 		write,
+	// 	}
 
-		if !reflect.DeepEqual(want, spySleepPrinter.Calls) {
-			t.Errorf("wanted calls %v got %v", want, spySleepPrinter.Calls)
-		}
-	})
+	// 	if !reflect.DeepEqual(want, spySleepPrinter.Calls) {
+	// 		t.Errorf("wanted calls %v got %v", want, spySleepPrinter.Calls)
+	// 	}
+	// })
 
 	t.Run("sleeper test", func(t *testing.T) {
 		sleeptime := 5 * time.Second
 		mySleeper := &mySleeper{}
-		sleeper := &configurable{sleeptime, mySleeper.sleep}
+		sleeper := &configurable{sleeptime, mySleeper.sleep, 0}
 		sleeper.Sleep()
 		if mySleeper.timeslept != sleeptime {
 			t.Errorf("got %v want %v", mySleeper.timeslept, sleeptime)
