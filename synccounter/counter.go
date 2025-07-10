@@ -1,18 +1,23 @@
 package sync
 
-import "sync"
+import (
+	"sync"
+)
 
 type counterstruct struct {
-	sync.Mutex
-	counter int
+	mu      sync.Mutex
+	Counter int
 }
 
+func NewCounter() *counterstruct {
+	return &counterstruct{}
+}
 func (c *counterstruct) Count() {
-	c.Lock()
-	defer c.Unlock()
-	c.counter++
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.Counter++
 }
 
 func (c *counterstruct) Value() int {
-	return c.counter
+	return c.Counter
 }

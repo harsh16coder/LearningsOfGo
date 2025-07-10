@@ -7,7 +7,7 @@ import (
 
 func TestCounter(t *testing.T) {
 	WordCount := 1000
-	c := counterstruct{}
+	c := NewCounter()
 	var wg sync.WaitGroup
 	wg.Add(WordCount)
 	for i := 0; i < WordCount; i++ {
@@ -17,7 +17,7 @@ func TestCounter(t *testing.T) {
 		}()
 	}
 	wg.Wait()
-	assertError(t, &c, WordCount)
+	assertError(t, c, WordCount)
 }
 
 func assertError(t *testing.T, got *counterstruct, wordcount int) {
