@@ -61,5 +61,5 @@ func (s *configurable) Sleep() {
 func main() {
 	sleeper := &configurable{1 * time.Second, time.Sleep, 0}
 	Countdown(os.Stdout, sleeper)
-	fmt.Println("time slept %v seconds", sleeper.totalTimeElapsed)
+	fmt.Printf("time slept %v seconds", sleeper.totalTimeElapsed)
 }
