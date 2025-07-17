@@ -1,6 +1,6 @@
-Title: Post 1
-Description: Description 1
-Tags: TDD,Learn
+Title: Welcome to my blog
+Description: Introduction to my blog
+Tags: cooking, family, live-laugh-love
 ---
-hello
-world
+# First recipe!
+Welcome to my **amazing recipe blog**. I am going to write about my family recipes, and make sure I write a long, irrelevant and boring story about my family before you get to the actual instructions.
