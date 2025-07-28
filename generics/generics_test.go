@@ -2,44 +2,46 @@ package generics
 
 import "testing"
 
-func TestGenrics(t *testing.T) {
-	t.Run("compare Integers", func(t *testing.T) {
-		stacklistint := NewStack[int]()
-		assertTrue(t, stacklistint.IsEmpty())
-		stacklistint.Push(10)
-		assertFalse(t, stacklistint.IsEmpty())
-		stacklistint.Push(43)
-		value, _ := stacklistint.Pop()
-		assertEqual(t, value, 43)
+func TestStack(t *testing.T) {
+	t.Run("test integers", func(t *testing.T) {
+		stackOfInt := NewStack[int]()
+		AssertTrue(t, stackOfInt.IsEmpty())
+		stackOfInt.Push(12)
+		AssertFalse(t, stackOfInt.IsEmpty())
+		stackOfInt.Push(20)
+		stackOfInt.Push(50)
+		poppedEle, _ := stackOfInt.Pop()
+		AsserEqual(t, 50, poppedEle)
 	})
-
-	t.Run("compare strings", func(t *testing.T) {
-		stacklistint := NewStack[string]()
-		assertTrue(t, stacklistint.IsEmpty())
-		stacklistint.Push("harsh")
-		assertFalse(t, stacklistint.IsEmpty())
-		stacklistint.Push("Prachiti")
-		value, _ := stacklistint.Pop()
-		assertEqual(t, value, "Prachiti")
+	t.Run("test strings", func(t *testing.T) {
+		stackOfInt := NewStack[string]()
+		AssertTrue(t, stackOfInt.IsEmpty())
+		stackOfInt.Push("Harsh")
+		AssertFalse(t, stackOfInt.IsEmpty())
+		stackOfInt.Push("Prachiti")
+		stackOfInt.Push("Love")
+		poppedEle, _ := stackOfInt.Pop()
+		AsserEqual(t, "Love", poppedEle)
 	})
 }
 
-func assertTrue(t testing.TB, got bool) {
+func AssertTrue(t *testing.T, got bool) {
 	t.Helper()
 	if !got {
-		t.Errorf("got %v and want true", got)
+		t.Errorf("got %v, want true", got)
 	}
 }
 
-func assertFalse(t testing.TB, got bool) {
+func AssertFalse(t *testing.T, got bool) {
 	t.Helper()
 	if got {
-		t.Errorf("got %v and want false", got)
+		t.Errorf("got %v, want false", got)
 	}
 }
 
-func assertEqual[T comparable](t testing.TB, got, want T) {
+func AsserEqual[T comparable](t *testing.T, got, want T) {
+	t.Helper()
 	if got != want {
-		t.Errorf("got %v and want %v", got, want)
+		t.Errorf("got this %v want this %v ", got, want)
 	}
 }
