@@ -6,34 +6,57 @@ import (
 	"strings"
 )
 
+// PlayerStore stores score information about players.
 type PlayerStore interface {
-	PlayerScore(name string) string
-	RecordWins(name string)
+	GetPlayerScore(name string) int
+	RecordWin(name string)
 }
 
-type Player struct {
+// PlayerServer is a HTTP interface for player information.
+type PlayerServer struct {
 	store PlayerStore
+	http.Handler
 }
 
-func (p *Player) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func NewPlayerServer(store PlayerStore) *PlayerServer {
+	p := new(PlayerServer)
+
+	p.store = store
+
+	router := http.NewServeMux()
+	router.Handle("/league", http.HandlerFunc(p.leagueHandler))
+	router.Handle("/players/", http.HandlerFunc(p.playersHandler))
+
+	p.Handler = router
+
+	return p
+}
+
+func (p *PlayerServer) leagueHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
+func (p *PlayerServer) playersHandler(w http.ResponseWriter, r *http.Request) {
 	player := strings.TrimPrefix(r.URL.Path, "/players/")
 	switch r.Method {
-	case "POST":
-		p.postScore(w, player)
-	case "GET":
+	case http.MethodPost:
+		p.processWin(w, player)
+	case http.MethodGet:
 		p.showScore(w, player)
 	}
 }
 
-func (p *Player) postScore(w http.ResponseWriter, player string) {
-	p.store.RecordWins(player)
-	w.WriteHeader(http.StatusAccepted)
-}
+func (p *PlayerServer) showScore(w http.ResponseWriter, player string) {
+	score := p.store.GetPlayerScore(player)
 
-func (p *Player) showScore(w http.ResponseWriter, player string) {
-	score := p.store.PlayerScore(player)
-	if score == "" {
+	if score == 0 {
 		w.WriteHeader(http.StatusNotFound)
 	}
-	fmt.Fprintf(w, "%s", p.store.PlayerScore(player))
+
+	fmt.Fprint(w, score)
+}
+
+func (p *PlayerServer) processWin(w http.ResponseWriter, player string) {
+	p.store.RecordWin(player)
+	w.WriteHeader(http.StatusAccepted)
 }
