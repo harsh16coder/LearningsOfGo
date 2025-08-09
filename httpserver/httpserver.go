@@ -1,21 +1,30 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
 )
 
+const jsonContentType = "application/json"
+
 // PlayerStore stores score information about players.
 type PlayerStore interface {
 	GetPlayerScore(name string) int
 	RecordWin(name string)
+	GetLeague() []Player
 }
 
 // PlayerServer is a HTTP interface for player information.
 type PlayerServer struct {
 	store PlayerStore
 	http.Handler
+}
+
+type Player struct {
+	Name string
+	Wins int
 }
 
 func NewPlayerServer(store PlayerStore) *PlayerServer {
@@ -33,8 +42,16 @@ func NewPlayerServer(store PlayerStore) *PlayerServer {
 }
 
 func (p *PlayerServer) leagueHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", jsonContentType)
+	json.NewEncoder(w).Encode(p.store.GetLeague())
 	w.WriteHeader(http.StatusOK)
 }
+
+// func (p *PlayerServer) getleagueTable(r *http.Request) []Player {
+// 	var leaguePlayers []Player
+// 	json.NewDecoder(r.Response.Body).Decode(&leaguePlayers)
+// 	return leaguePlayers
+// }
 
 func (p *PlayerServer) playersHandler(w http.ResponseWriter, r *http.Request) {
 	player := strings.TrimPrefix(r.URL.Path, "/players/")
