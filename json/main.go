@@ -7,13 +7,13 @@ import (
 )
 
 type myJson struct {
-	Intvalue        int       `json: "intvalue"`
-	Stringvalue     string    `json: "stringvalue"`
-	BoolValue       bool      `json: "boolvalue"`
-	DateValue       time.Time `json: "time"`
-	ObjectValue     *myObj    `json: "objectvalue"`
-	NullIntValue    *int      `json: "nullIntvalue"`
-	NullStringValue *string   `json: "nullstringvalue"`
+	Intvalue        int       `json:"intvalue"`
+	Stringvalue     string    `json:"stringvalue"`
+	BoolValue       bool      `json:"boolvalue"`
+	DateValue       time.Time `json:"time"`
+	ObjectValue     *myObj    `json:"objectvalue"`
+	NullIntValue    *int      `json:"nullIntvalue,omitempty"`
+	NullStringValue *string   `json:"nullstringvalue"`
 }
 
 type myObj struct {
@@ -31,7 +31,7 @@ func main() {
 		ObjectValue: &myObj{
 			ArrayValue: []int{1, 2, 3, 5},
 		},
-		NullIntValue:    &otherint,
+		NullIntValue:    nil,
 		NullStringValue: nil,
 	}
 	marshalData, err := json.Marshal(data)
