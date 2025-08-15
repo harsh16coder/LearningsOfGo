@@ -16,6 +16,8 @@ func main() {
 func returnDiget(s string) {
 	var b []byte
 	b = unsafe.Slice(unsafe.StringData(s), len(s))
+	fmt.Println(b)
+	fmt.Println([]byte(s))
 	fmt.Println(Digest64(b))
 }
 
