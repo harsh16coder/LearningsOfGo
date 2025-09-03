@@ -2,22 +2,21 @@ package main
 
 import (
 	"fmt"
-	"unsafe"
 
-	"github.com/cespare/xxhash"
+	"github.com/cespare/xxhash/v2"
 )
 
 func main() {
-	var name = "harsh"
+	var name = "Roger federar is not a tennis player"
 	returnDiget(name)
-	fmt.Println(xxhash.Sum64String(name))
+	fmt.Println(xxhash.Sum64([]byte("harsh")))
+	var num uint64 = xxhash.Sum64([]byte("1234567890"))
+	fmt.Printf("%016x\n", num)
+	fmt.Printf("%x", num)
 }
 
 func returnDiget(s string) {
-	var b []byte
-	b = unsafe.Slice(unsafe.StringData(s), len(s))
-	fmt.Println(b)
-	fmt.Println([]byte(s))
+	var b = []byte(s)
 	fmt.Println(Digest64(b))
 }
 
