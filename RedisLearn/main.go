@@ -19,6 +19,7 @@ func ExampleClient_connect_basic() {
 		Password: "wNUf8rJ9V7AA8oSFucSxI6uOZ96YYbNL",
 		DB:       0,
 	})
+	defer rdb.Close()
 	rdb.LPush(ctx, "Persons", "123")
 	rdb.LPush(ctx, "Persons", "345")
 	rdb.LPush(ctx, "Persons", "567")
