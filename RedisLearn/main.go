@@ -33,6 +33,7 @@ func ExampleClient_connect_basic() {
 	fmt.Println(rdb.SMembers(ctx, "Players").Result())
 	rdb.SAdd(ctx, "Players", "Aashish")
 	fmt.Println(rdb.SMembers(ctx, "Players").Result())
+	fmt.Println(rdb.DBSize(ctx).Result())
 	time.Sleep(1 * time.Second)
 	go func() {
 		defer wg.Done()
