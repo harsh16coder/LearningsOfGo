@@ -7,6 +7,7 @@ func isAnagram(s string, t string) bool {
 		return false
 	}
 	count := [26]int{}
+	fmt.Println(count)
 	for i := 0; i < len(s); i++ {
 		count[s[i]-'a']++
 		count[t[i]-'a']--
@@ -20,8 +21,8 @@ func isAnagram(s string, t string) bool {
 }
 
 func main() {
-	s := "jar"
-	t := "jam"
+	s := "#a#"
+	t := "a##"
 	fmt.Println(isAnagram(s, t))
 }
 
